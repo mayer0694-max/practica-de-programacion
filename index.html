@@ -1,50 +1,146 @@
-<h1 style="
-font-family: 'Courier New', Courier, monospace;
-color: #333;
+<div id="crypto-generator" style="
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
 text-align: center;
-">Hola Anfer</h1>
-
-<div style="text-align: center; margin-top: 20px;">
-
-<div id="synth-knob" style="
-width: 100px;
-height: 100px;
-border-radius: 50%;
-background: radial-gradient(circle at 30% 30%, #ff4757, #c44569);
-border: 4px solid #2c2c54;
-box-shadow:
-0 8px 15px rgba(0, 0, 0, 0.6),
-inset -3px -3px 10px rgba(0, 0, 0, 0.5),
-inset 3px 3px 10px rgba(255, 255, 255, 0.2);
-cursor: pointer;
-display: inline-block;
-transition: all 0.1s ease-in-out;
-position: relative;
-"
-onmousedown="
-this.style.transform='translateY(3px) scale(0.98)';
-this.style.boxShadow='0 3px 5px rgba(0, 0, 0, 0.6), inset -1px -1px 5px rgba(0, 0, 0, 0.5), inset 1px 1px 5px rgba(255, 255, 255, 0.2)';
-"
-onmouseup="
-this.style.transform='translateY(0px) scale(1)';
-this.style.boxShadow='0 8px 15px rgba(0, 0, 0, 0.6), inset -3px -3px 10px rgba(0, 0, 0, 0.5), inset 3px 3px 10px rgba(255, 255, 255, 0.2)';
-"
-onmouseleave="
-this.style.transform='translateY(0px) scale(1)';
-this.style.boxShadow='0 8px 15px rgba(0, 0, 0, 0.6), inset -3px -3px 10px rgba(0, 0, 0, 0.5), inset 3px 3px 10px rgba(255, 255, 255, 0.2)';
-"
->
-<div style="
-position: absolute;
-top: 10px;
-left: 50%;
-transform: translateX(-50%);
-width: 4px;
-height: 25px;
-background-color: #f5f3ce;
-border-radius: 2px;
-box-shadow: 0 0 3px rgba(0,0,0,0.5);
+padding: 20px;
+border-radius: 10px;
+background-color: #f0f2f5;
+">
+<h2 style="color: #333; margin-bottom: 25px;">Generador de Cripto al Azar</h2>
+<div id="crypto-display" style="
+min-height: 220px;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-bottom: 25px;
 "></div>
+<button id="generate-btn" style="
+font-family: 'Courier New', Courier, monospace;
+font-size: 16px;
+font-weight: bold;
+color: white;
+background-color: #007bff;
+border: 2px solid #0056b3;
+padding: 12px 25px;
+border-radius: 5px;
+cursor: pointer;
+transition: background-color 0.2s, transform 0.1s;
+box-shadow: 0 4px #003d7a;
+"
+onmouseover="this.style.backgroundColor='#0056b3'"
+onmouseout="this.style.backgroundColor='#007bff'"
+onmousedown="this.style.transform='translateY(2px)'; this.style.boxShadow='0 2px #003d7a';"
+onmouseup="this.style.transform='translateY(0px)'; this.style.boxShadow='0 4px #003d7a';"
+>
+🎲 Generar Nueva Cripto
+</button>
 </div>
 
+<script>
+const cryptos = [
+{ name: 'Bitcoin', symbol: 'BTC', logoUrl: 'https://cryptologos.cc/logos/bitcoin-btc-logo.png' },
+{ name: 'Ethereum', symbol: 'ETH', logoUrl: 'https://cryptologos.cc/logos/ethereum-eth-logo.png' },
+{ name: 'Dogecoin', symbol: 'DOGE', logoUrl: 'https://cryptologos.cc/logos/dogecoin-doge-logo.png' },
+{ name: 'Litecoin', symbol: 'LTC', logoUrl: 'https://cryptologos.cc/logos/litecoin-ltc-logo.png' },
+{ name: 'Cardano', symbol: 'ADA', logoUrl: 'https://cryptologos.cc/logos/cardano-ada-logo.png' },
+{ name: 'Polkadot', symbol: 'DOT', logoUrl: 'https://cryptologos.cc/logos/polkadot-new-dot-logo.png' },
+{ name: 'Ripple', symbol: 'XRP', logoUrl: 'https://cryptologos.cc/logos/xrp-xrp-logo.png' },
+{ name: 'Stellar', symbol: 'XLM', logoUrl: 'https://cryptologos.cc/logos/stellar-xlm-logo.png' },
+{ name: 'Chainlink', symbol: 'LINK', logoUrl: 'https://cryptologos.cc/logos/chainlink-link-logo.png' },
+{ name: 'Solana', symbol: 'SOL', logoUrl: 'https://cryptologos.cc/logos/solana-sol-logo.png' },
+];
+const designMinimalist = (crypto) => `
+<div style="
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+padding: 30px;
+border-radius: 15px;
+color: white;
+width: 280px;
+box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+display: flex;
+flex-direction: column;
+align-items: center;
+text-align: center;
+">
+<img src="${crypto.logoUrl}" alt="${crypto.name} Logo" style="width: 80px; height: 80px; margin-bottom: 15px; border-radius: 50%;">
+<h3 style="margin: 5px 0; font-size: 28px; font-weight: bold;">${crypto.name}</h3>
+<p style="margin: 0; font-size: 20px; font-weight: 300;">${crypto.symbol}</p>
 </div>
+`;
+const designPixel = (crypto) => `
+<div style="
+background-color: #2a2a2a;
+border: 4px solid #00ff00;
+color: #00ff00;
+padding: 20px;
+width: 250px;
+font-family: 'Courier New', Courier, monospace;
+box-shadow: 5px 5px 0px #005500;
+text-shadow: 1px 1px #005500;
+">
+<p style="margin: 0; font-size: 14px;">> CARGANDO...</p>
+<h3 style="margin: 10px 0; font-size: 24px; letter-spacing: 2px;">${crypto.name}</h3>
+<img src="${crypto.logoUrl}" alt="${crypto.name} Logo" style="width: 100px; height: 100px; image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges; margin: 10px 0;">
+<p style="margin: 10px 0 0 0; font-size: 18px;">[${crypto.symbol}]</p>
+</div>
+`;
+const designCyberpunk = (crypto) => `
+<div style="
+background: #0a0a0a;
+border: 1px solid #ff00ff;
+color: #00ffff;
+padding: 25px;
+width: 280px;
+font-family: 'Courier New', Courier, monospace;
+position: relative;
+overflow: hidden;
+box-shadow: 0 0 15px #ff00ff, inset 0 0 10px #00ffff;
+">
+<style>
+@keyframes glitch {
+0%, 100% { text-shadow: 2px 2px #ff00ff, -2px -2px #00ffff; }
+25% { text-shadow: -2px 2px #ff00ff, 2px -2px #00ffff; }
+50% { text-shadow: 2px -2px #ff00ff, -2px 2px #00ffff; }
+}
+</style>
+<p style="margin: 0; font-size: 12px; opacity: 0.7; animation: glitch 2s infinite;">// ACCESO CONCEDIDO</p>
+<h3 style="margin: 10px 0; font-size: 26px; font-weight: bold; animation: glitch 2s infinite;">${crypto.name.toUpperCase()}</h3>
+<img src="${crypto.logoUrl}" alt="${crypto.name} Logo" style="width: 90px; height: 90px; filter: drop-shadow(0 0 10px ${crypto.color || '#00ffff'});">
+<p style="margin: 10px 0 0 0; font-size: 18px; color: ${crypto.color || '#00ffff'};">${crypto.symbol}</p>
+</div>
+`;
+const designHolographic = (crypto) => `
+<div style="
+background: conic-gradient(from 180deg at 50% 50%, #ff002b, #ff7a00, #fffb00, #00ff00, #0099ff, #6633ff, #ff002b);
+padding: 4px;
+border-radius: 15px;
+width: 280px;
+animation: rotate 3s linear infinite;
+">
+<style>
+@keyframes rotate { 100% { transform: rotate(360deg); } }
+</style>
+<div style="
+background-color: #1a1a1a;
+border-radius: 12px;
+padding: 25px;
+color: white;
+text-align: center;
+">
+<p style="margin: 0; font-size: 14px; color: #aaa;">✨ EDICIÓN LIMITADA ✨</p>
+<h3 style="margin: 10px 0; font-size: 28px; font-weight: bold; color: ${crypto.color || '#fff'};">${crypto.name}</h3>
+<img src="${crypto.logoUrl}" alt="${crypto.name} Logo" style="width: 90px; height: 90px; filter: drop-shadow(0 0 8px ${crypto.color || '#fff'});">
+<p style="margin: 10px 0 0 0; font-size: 20px; font-weight: 300;">${crypto.symbol}</p>
+</div>
+</div>
+`;
+const designs = [designMinimalist, designPixel, designCyberpunk, designHolographic];
+const displayDiv = document.getElementById('crypto-display');
+const generateBtn = document.getElementById('generate-btn');
+function generateRandomCrypto() {
+const randomCrypto = cryptos[Math.floor(Math.random() * cryptos.length)];
+const randomDesign = designs[Math.floor(Math.random() * designs.length)];
+displayDiv.innerHTML = randomDesign(randomCrypto);
+}
+generateBtn.onclick = generateRandomCrypto;
+generateRandomCrypto();
+</script>
